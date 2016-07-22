@@ -4,13 +4,14 @@ namespace Rappasoft\BoilerplateInstaller\Installation;
 
 use Symfony\Component\Process\Process;
 use Rappasoft\BoilerplateInstaller\NewCommand;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
- * Class NpmInstall
+ * Class SetNamespace
  * @package Rappasoft\BoilerplateInstaller\Installation
  */
-class NpmInstall
+class SetNamespace
 {
 	/**
 	 * @var NewCommand
@@ -18,7 +19,7 @@ class NpmInstall
 	protected $command;
 
 	/**
-	 * NpmInstall constructor.
+	 * CopyEnv constructor.
 	 * @param NewCommand $command
 	 */
 	public function __construct(NewCommand $command)
@@ -33,13 +34,17 @@ class NpmInstall
 	 */
 	public function install()
 	{
-		if (! $this->command->output->confirm('Would you like to install the NPM dependencies?', true)) {
+		if (! $this->command->output->confirm('Would you like set the application namespace?', true)) {
 			return;
 		}
 
-		$this->command->output->writeln('<info>Installing NPM Dependencies (Few Minutes)...</info>');
+		$helper = $this->command->getHelper('question');
+		$question = new Question('Namespace (App):', 'App');
+		$namespace = $helper->ask($this->command->input, $this->command->output, $question);
 
-		$process = (new Process('npm set progress=false && npm install', $this->command->path))->setTimeout(null);
+		$this->command->output->writeln('<info>Setting application namespace</info>...</info>');
+
+		$process = (new Process('php artisan app:name ' . $namespace, $this->command->path))->setTimeout(null);
 
 		if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
 			$process->setTty(true);
@@ -52,8 +57,5 @@ class NpmInstall
 		if (!$process->isSuccessful()) {
 			throw new ProcessFailedException($process);
 		}
-
-		$this->command->npm_installed = true;
-		$this->command->output->writeln('<info>NPM Dependencies Installed!</info>');
 	}
 }

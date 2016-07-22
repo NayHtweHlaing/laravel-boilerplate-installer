@@ -9,6 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
+/**
+ * Class NewCommand
+ * @package Rappasoft\BoilerplateInstaller
+ */
 class NewCommand extends SymfonyCommand
 {
     /**
@@ -32,6 +36,33 @@ class NewCommand extends SymfonyCommand
      */
     public $path;
 
+	/**
+	 * Whether or not composer was run
+	 * @var bool
+	 */
+	public $depencies_installed = false;
+
+	/**
+	 * Keeps track of whether or not NPM dependencies were installed
+	 * so we know whether or not to ask to run gulp later on
+	 * @var bool
+	 */
+	public $npm_installed = false;
+
+	/**
+	 * Keeps track of whether or not database credentials were supplied
+	 * so we know whether or not to ask to run migrate and seed
+	 * @var bool
+	 */
+	public $database_set = false;
+
+	/**
+	 * Whether or not the migrations were ran
+	 * so we know whether or not to ask to run the seeder
+	 * @var bool
+	 */
+	public $migrations_run = false;
+
     /**
      * Configure the command options.
      *
@@ -42,7 +73,7 @@ class NewCommand extends SymfonyCommand
         $this
             ->setName('new')
             ->setDescription('Create a new Laravel Boilerplate project')
-            ->addArgument('name', InputArgument::REQUIRED, 'The name of the application');
+            ->addArgument('name', InputArgument::OPTIONAL, 'The name of the application');
     }
 
     /**
@@ -56,23 +87,27 @@ class NewCommand extends SymfonyCommand
     {
         $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
-		$this->verifyApplicationDoesntExist($this->path = $input->getArgument('name') ? getcwd().'/'.$input->getArgument('name') : getcwd());
+		$name = $input->getArgument('name');
+		$this->verifyApplicationDoesntExist($this->path = $name ? getcwd().'/'.$name : getcwd());
 
         $installers = [
             Installation\DownloadBoilerplate::class,
             Installation\ComposerInstall::class,
-            /*Installation\NpmInstall::class,
-            Installation\GenerateKey::class,
+            Installation\NpmInstall::class,
 			Installation\RunGulp::class,
+            Installation\GenerateKey::class,
+			Installation\SetNamespace::class,
 			Installation\ConnectDatabase::class,
 			Installation\Migrate::class,
 			Installation\SetAdministratorAccount::class,
-			Installation\Seed::class,*/
+			Installation\Seed::class,
         ];
 
         foreach ($installers as $installer) {
-            (new $installer($this, $input->getArgument('name')))->install();
+            (new $installer($this, $name))->install();
         }
+
+		$output->writeln('<info>Installation Complete!</info>');
     }
 
 	/**

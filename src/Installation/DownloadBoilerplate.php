@@ -42,7 +42,7 @@ class DownloadBoilerplate
 	public function install()
 	{
 		$this->checkDependencies();
-		$this->command->output->writeln('<info>Downloading latest version of Laravel Boilerplate...</info>');
+		$this->command->output->writeln('<info>Downloading latest version of Laravel Boilerplate by Anthony Rappa (anthony@rappasoft.com)...</info>');
 		$this->download($zipFile = $this->makeFilename())
 				->extract($zipFile, $this->command->path)
 				->move($old_dir = $this->command->path . '/laravel-5-boilerplate-master', $this->command->path)

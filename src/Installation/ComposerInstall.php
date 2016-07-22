@@ -4,6 +4,7 @@ namespace Rappasoft\BoilerplateInstaller\Installation;
 
 use Symfony\Component\Process\Process;
 use Rappasoft\BoilerplateInstaller\NewCommand;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Class ComposerInstall
@@ -32,6 +33,10 @@ class ComposerInstall
 	 */
 	public function install()
 	{
+		if (! $this->command->output->confirm('Would you like to install the Boilerplate dependencies?', true)) {
+			return;
+		}
+
 		$composer = $this->findComposer();
 		$this->command->output->writeln('<info>Running Composer...</info>');
 
@@ -58,6 +63,11 @@ class ComposerInstall
 			$this->command->output->write($line);
 		});
 
+		if (!$process->isSuccessful()) {
+			throw new ProcessFailedException($process);
+		}
+
+		$this->command->depencies_installed = true;
 		$this->command->output->writeln('<info>Dependencies Installed!</info>');
 	}
 
