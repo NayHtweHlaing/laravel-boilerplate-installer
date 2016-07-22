@@ -38,7 +38,7 @@ class ConnectDatabase
 	 */
 	public function install()
 	{
-		if ($this->command->depencies_installed) {
+		if ($this->command->dependencies_installed) {
 			if (!$this->command->output->confirm('Would you like set database credentials?', true)) {
 				return;
 			}

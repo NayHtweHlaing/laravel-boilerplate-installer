@@ -4,7 +4,14 @@ This is a command line installer for the Laravel 5 Boilerplate project that give
 
 ## How To Use
 
-First, download the Laravel installer using Composer:
+**Prerequisites:**
+
+- Composer (Local or global)
+- NPM (Global)
+- Gulp (Global)
+
+
+**First**, download the Laravel installer using Composer:
 
 ```composer global require "rappasoft/laravel-boilerplate-installer"```
 
@@ -24,9 +31,10 @@ It will take you through the following steps:
 
 - Download
 - Composer Install
+- Copy the .env file
+- Generate the Key
 - NPM Install
 - Running Gulp
-- Generate the Key
 - Set the Namespace
 - Connect to the Database
 - Set the Administrator Account
@@ -34,4 +42,4 @@ It will take you through the following steps:
 
 Not all steps are required an it will ask you along the way.
 
-**This has only been tested on Laravel Homestead and not MAMP/XXAMP**
+**This has only been tested on Laravel Homestead and not MAMP/XAAMP**
