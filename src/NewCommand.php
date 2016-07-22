@@ -2,13 +2,11 @@
 
 namespace Rappasoft\BoilerplateInstaller;
 
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class NewCommand extends SymfonyCommand
@@ -28,7 +26,7 @@ class NewCommand extends SymfonyCommand
     public $output;
 
     /**
-     * The path to the new Spark installation.
+     * The path to the new Boilerplate installation.
      *
      * @var string
      */
@@ -58,24 +56,32 @@ class NewCommand extends SymfonyCommand
     {
         $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
-
-        $this->path = getcwd().'/'.$input->getArgument('name');
+		$this->verifyApplicationDoesntExist($this->path = $input->getArgument('name') ? getcwd().'/'.$input->getArgument('name') : getcwd());
 
         $installers = [
             Installation\DownloadBoilerplate::class,
             Installation\ComposerInstall::class,
-            Installation\NpmInstall::class,
-            Installation\CopyEnv::class,
+            /*Installation\NpmInstall::class,
             Installation\GenerateKey::class,
 			Installation\RunGulp::class,
 			Installation\ConnectDatabase::class,
 			Installation\Migrate::class,
 			Installation\SetAdministratorAccount::class,
-			Installation\Seed::class,
+			Installation\Seed::class,*/
         ];
 
         foreach ($installers as $installer) {
             (new $installer($this, $input->getArgument('name')))->install();
         }
     }
+
+	/**
+	 * @param $directory
+	 */
+	private function verifyApplicationDoesntExist($directory)
+	{
+		if ((is_dir($directory) || is_file($directory)) && $directory != getcwd()) {
+			throw new RuntimeException('Application already exists!');
+		}
+	}
 }
