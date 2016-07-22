@@ -40,7 +40,7 @@ class NewCommand extends SymfonyCommand
 	 * Whether or not composer was run
 	 * @var bool
 	 */
-	public $depencies_installed = false;
+	public $dependencies_installed = false;
 
 	/**
 	 * Keeps track of whether or not NPM dependencies were installed
@@ -95,7 +95,6 @@ class NewCommand extends SymfonyCommand
             Installation\ComposerInstall::class,
             Installation\NpmInstall::class,
 			Installation\RunGulp::class,
-            Installation\GenerateKey::class,
 			Installation\SetNamespace::class,
 			Installation\ConnectDatabase::class,
 			Installation\Migrate::class,

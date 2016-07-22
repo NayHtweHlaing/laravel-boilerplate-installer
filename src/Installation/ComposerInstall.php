@@ -67,7 +67,7 @@ class ComposerInstall
 			throw new ProcessFailedException($process);
 		}
 
-		$this->command->depencies_installed = true;
+		$this->command->dependencies_installed = true;
 		$this->command->output->writeln('<info>Dependencies Installed!</info>');
 	}
 
