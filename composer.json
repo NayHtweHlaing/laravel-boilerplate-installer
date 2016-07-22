@@ -1,0 +1,27 @@
+{
+    "name": "rappasoft/laravel-boilerplate-installer",
+    "description": "Command line installer for the Laravel Boilerplate Project.",
+    "keywords": ["boilerplate", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Rappa",
+            "email": "anthony@rappasoft.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rappasoft\\BoilerplateInstaller\\": "src/"
+        }
+    },
+    "require": {
+        "illuminate/support": "~5.1",
+        "symfony/console": "~2.7|~3.0",
+        "symfony/process": "~2.7|~3.0",
+        "illuminate/filesystem": "~5.1",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "bin": [
+        "boilerplate"
+    ]
+}
