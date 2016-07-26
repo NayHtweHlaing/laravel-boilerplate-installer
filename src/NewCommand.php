@@ -95,11 +95,11 @@ class NewCommand extends SymfonyCommand
             Installation\ComposerInstall::class,
             Installation\NpmInstall::class,
 			Installation\RunGulp::class,
-			Installation\SetNamespace::class,
 			Installation\ConnectDatabase::class,
 			Installation\Migrate::class,
 			Installation\SetAdministratorAccount::class,
 			Installation\Seed::class,
+			Installation\SetNamespace::class,
         ];
 
         foreach ($installers as $installer) {
