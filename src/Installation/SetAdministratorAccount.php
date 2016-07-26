@@ -38,7 +38,7 @@ class SetAdministratorAccount
 	 */
 	public function install()
 	{
-		//if ($this->command->migrations_run) {
+		if ($this->command->migrations_run) {
 			if (!$this->command->output->confirm('Would you like to set the credentials to the administrator account?', true)) {
 				return;
 			}
@@ -58,9 +58,9 @@ class SetAdministratorAccount
 			$this->setPassword($password);
 
 			$this->command->output->writeln('<info>Administrator Account Information Set!</info>');
-		//}
+		}
 
-		//return;
+		return;
 	}
 
 	/**
