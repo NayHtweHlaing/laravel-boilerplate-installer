@@ -2,6 +2,7 @@
 
 namespace Rappasoft\BoilerplateInstaller;
 
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -81,7 +82,7 @@ class NewCommand extends SymfonyCommand
             ->setName('new')
             ->setDescription('Create a new Laravel Boilerplate project')
             ->addArgument('name', InputArgument::OPTIONAL, 'The name of the application')
-			->addOption('dev', 'd', InputArgument::OPTIONAL, 'Whether or not to pull the development branch');
+			->addOption('dev', null, InputOption::VALUE_NONE, 'Whether or not to pull the development branch');
     }
 
     /**
