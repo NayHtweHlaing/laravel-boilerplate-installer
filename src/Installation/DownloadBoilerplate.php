@@ -73,7 +73,7 @@ class DownloadBoilerplate
 	 */
 	protected function download($zipFile)
 	{
-		$response = (new Client(['verify' => false]))->get('https://github.com/rappasoft/laravel-5-boilerplate/archive/'.$this->dev ? 'development' : 'master '.'.zip');
+		$response = (new Client(['verify' => false]))->get('https://github.com/rappasoft/laravel-5-boilerplate/archive/'.$this->command->dev ? 'development' : 'master '.'.zip');
 		file_put_contents($zipFile, $response->getBody());
 		return $this;
 	}
