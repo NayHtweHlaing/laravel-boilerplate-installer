@@ -42,10 +42,10 @@ class DownloadBoilerplate
 	public function install()
 	{
 		$this->checkDependencies();
-		$this->command->output->writeln('<info>Downloading latest version of Laravel Boilerplate by Anthony Rappa (anthony@rappasoft.com)...</info>');
+		$this->command->output->writeln('<info>Downloading latest'.($this->command->dev ? ' development' : '').' version of Laravel Boilerplate by Anthony Rappa (anthony@rappasoft.com)...</info>');
 		$this->download($zipFile = $this->makeFilename())
 				->extract($zipFile, $this->command->path)
-				->move($old_dir = $this->command->path . '/laravel-5-boilerplate-master', $this->command->path)
+				->move($old_dir = $this->command->path . ($this->command->dev ? '/laravel-5-boilerplate-development' : '/laravel-5-boilerplate-master'), $this->command->path)
 				->cleanUp([$zipFile, $old_dir]);
 		$this->command->output->writeln('<info>Download complete!</info>');
 	}
@@ -73,7 +73,12 @@ class DownloadBoilerplate
 	 */
 	protected function download($zipFile)
 	{
-		$response = (new Client(['verify' => false]))->get('https://github.com/rappasoft/laravel-5-boilerplate/archive/'.$this->command->dev ? 'development' : 'master '.'.zip');
+		if ($this->command->dev) {
+			$response = (new Client(['verify' => false]))->get('https://github.com/rappasoft/laravel-5-boilerplate/archive/development.zip');
+		} else {
+			$response = (new Client(['verify' => false]))->get('https://github.com/rappasoft/laravel-5-boilerplate/archive/master.zip');
+		}
+
 		file_put_contents($zipFile, $response->getBody());
 		return $this;
 	}
