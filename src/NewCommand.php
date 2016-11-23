@@ -81,7 +81,7 @@ class NewCommand extends SymfonyCommand
             ->setName('new')
             ->setDescription('Create a new Laravel Boilerplate project')
             ->addArgument('name', InputArgument::OPTIONAL, 'The name of the application')
-			->addOption('dev', InputArgument::OPTIONAL, 'Whether or not to pull the development branch');
+			->addOption('dev', 'd', InputArgument::OPTIONAL, 'Whether or not to pull the development branch');
     }
 
     /**
