@@ -22,6 +22,13 @@ class NewCommand extends SymfonyCommand
      */
     public $input;
 
+	/**
+	 * Whether or not to pull from the development branch
+	 *
+	 * @var
+	 */
+	public $dev;
+
     /**
      * The output interface.
      *
@@ -73,7 +80,8 @@ class NewCommand extends SymfonyCommand
         $this
             ->setName('new')
             ->setDescription('Create a new Laravel Boilerplate project')
-            ->addArgument('name', InputArgument::OPTIONAL, 'The name of the application');
+            ->addArgument('name', InputArgument::OPTIONAL, 'The name of the application')
+			->addOption('dev', InputArgument::OPTIONAL, 'Whether or not to pull the development branch');
     }
 
     /**
@@ -88,6 +96,7 @@ class NewCommand extends SymfonyCommand
         $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
 		$name = $input->getArgument('name');
+		$this->dev = $input->getOption('dev');
 		$this->verifyApplicationDoesntExist($this->path = $name ? getcwd().'/'.$name : getcwd());
 
         $installers = [
